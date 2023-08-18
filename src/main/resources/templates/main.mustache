@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-
 <body>
     <h1>카테고리별 기술 목록보기</h1>
     <hr />
-    <select name="" id="">
-        {{#categoryList}}
-            <option value="">{{name}}</option>
-        {{/categoryList}}
+    <select id="category">
     </select>
-
-    <select name="" id="">
-        {{#techList}}
-            <option value="">{{name}}</option>
-        {{/techList}}
+    <select>
     </select>
+    <script>
+        async function fetchCategory() {
+            let response = await fetch("/api/category");
+            let body = await response.json(); // json -> js object
+            let categoryEl = document.querySelector("#category");
+            for (c of body) {
+                let optionEl = document.createElement("option");
+                optionEl.innerHTML = c.name;
+                categoryEl.append(optionEl);
+            }
+            //console.log(body);
+        }
+        fetchCategory();
+    </script>
 </body>
-
 </html>

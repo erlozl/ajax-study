@@ -26,6 +26,7 @@ public class TechController {
         System.out.println("=================================");
         TechResponse.MainDTO mainDTO = new TechResponse.MainDTO(categoryList, techList);
         return mainDTO; // messageconverter 발동 - json 변환
+
     }
 
     @GetMapping("/test/techlazy")
@@ -45,6 +46,11 @@ public class TechController {
     public @ResponseBody List<Tech> techV2() {
         List<Tech> techList = techRepository.findByCategoryId(1);
         return techList;
+    }
+
+    @GetMapping("/api/category")
+    public @ResponseBody List<Category> category() {
+        return categoryRepository.findAll();
     }
 
     // ajax
