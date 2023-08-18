@@ -8,23 +8,54 @@
 <body>
     <h1>카테고리별 기술 목록보기</h1>
     <hr />
-    <select id="category">
+    <select id="category" onchange="onCategoryChange()">
     </select>
-    <select>
+    <select id="tech">
     </select>
     <script>
         async function fetchCategory() {
+            // download
             let response = await fetch("/api/category");
             let body = await response.json(); // json -> js object
+
+            // dom 제어
             let categoryEl = document.querySelector("#category");
             for (c of body) {
                 let optionEl = document.createElement("option");
+                optionEl.value = c.id;
                 optionEl.innerHTML = c.name;
                 categoryEl.append(optionEl);
             }
             //console.log(body);
         }
+
+        async function fetchTech(categoryId) {
+            // download
+            let response = await fetch("/api/tech?categoryId=" + categoryId);
+            let body = await response.json();
+
+            // 옵션 초기화
+            let techEl = document.querySelector("#tech");
+            techEl.innerHTML = ""; // Clear previous options
+            // 옵션초기화를 해야 지우고 다시 채워줌
+            
+            for (t of body) {
+                let optionEl = document.createElement("option");
+                optionEl.value = t.id;
+                optionEl.innerHTML = t.name;
+                techEl.append(optionEl);
+            }
+        }
+
+        async function onCategoryChange() {
+            let categoryEl = document.querySelector("#category");
+            let selectedCategoryId = categoryEl.value;
+            fetchTech(selectedCategoryId);
+        }
+
+        // 화면 초기화
         fetchCategory();
+        fetchTech(1);
     </script>
 </body>
 </html>
